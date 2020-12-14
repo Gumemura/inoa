@@ -1,61 +1,113 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <script>
+        function pressed(e) {
+            if ( (window.event ? event.keyCode : e.which) == 13) {
+                document.forms[0].submit();
+            }
+        }
+        </script>
         <style>
             body {
                 background-color: black;
             }
-            
+
             div {
                 color: white;
                 //display: inline-block;;
             }
-            
+
             textarea {
                 resize: none;
             }
-            
+
             .flex-box {
                 display: grid;
                 align-items: center;
                 justify-content: center;
             }
-            
+
             .container-box {
                 height: 300px;
             }
-            
+
             .content-box {
                 text-align: center;
                 width: 420px;
                 align-content: center;
             }
-            
+
             .nice-font{
                 font-family: Arial;
                 font-size: 150%;
             }
-            
+
+            .nice-font-error{
+                text-align:center;
+                font-family: Arial;
+                color: red;
+                font-size: 100%;
+            }
+
             .upper_right_corner {
                 text-align:center;
                 position: absolute;
                 top: 0;
                 right: 0;
             }
+
+            .alert-error {
+                padding: 12px;
+                border-radius: 3px;
+                font-size: 1.2rem;
+                margin-bottom: 16px;
+                border: 2px solid darkred;
+                background-color: red;
+                color: white;
+            }
+
+            .border {
+                border-radius: 3px;
+                border: 2px solid orange;
+            }
+
         </style>
 	    <title>Stock tracker by Gumemura</title>
     </head>
-    
+
     <body>
-        background-color: coral;
         <div class="flex-box container-box">
             <div class="content-box nice-font">Stock Tracker</div>
             <div class="content-box">
-                <textarea name="userEmail" style="height:20px;width:400px" placeholder="Enter your e-mail"></textarea>
-                <input type="submit" value="Submit">
+                <form action="." method="POST">
+                    <script>
+
+                    </script>
+                    <textarea onkeydown="pressed(event)" name="userEmail" style="height:20px;width:400px" placeholder="Enter your e-mail"></textarea>
+                    <input type="submit" value="Submit">
+                </form>
             </div>
         </div>
-        <!--<div class="upper_right_corner">
+
+        <div class = "container-box nice-font-error">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        </div>
+
+        <!--<div class="content-box nice-font alert-info">
+            {% for user in users %}
+                <div class = "content-box nice-font">
+                    {{ user.userEmail }}
+                </div>
+            {% endfor %}
+        </div>
+        <div class="upper_right_corner">
             <p align="center"><a href = prox ><button class=upper_right_corner style="height:75px;width:150px">prox pag</button></a></p>
         </div>-->
     </body>
