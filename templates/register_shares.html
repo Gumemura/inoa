@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script>
+        function pressed(e) {
+            if ( (window.event ? event.keyCode : e.which) == 13) {
+                document.forms[0].submit();
+            }
+        }
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+        var yyyy = today.getFullYear();
+        if(dd<10){
+            dd='0'+dd
+        }
+        if(mm<10){
+            mm='0'+mm
+        }
+        document.getElementById("datefield").setAttribute("max", "2020-12-25");
+
+
+        </script>
+
+        <style>
+            #mainMenuButton {
+                width: 20em;
+                height: 4em;
+          	}
+
+            body {
+                background-color: black;
+            }
+
+            div {
+                color: white;
+                //display: inline-block;;
+            }
+
+            textarea {
+                resize: none;
+            }
+
+            p {
+                font-family: Arial;
+                font-size: 100%;
+            }
+
+            .flex-box {
+                display: grid;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .container-box {
+                height: 300px;
+            }
+
+            .content-box {
+                text-align: center;
+                width: 420px;
+                align-content: center;
+            }
+
+            .nice-font{
+                font-family: Arial;
+                font-size: 150%;
+            }
+
+            .nice-font-error{
+                text-align:center;
+                font-family: Arial;
+                color: red;
+                font-size: 100%;
+            }
+
+            .upper_right_corner {
+                text-align:center;
+                position: absolute;
+                top: 0;
+                right: 0;
+            }
+
+            .alert-error {
+                padding: 12px;
+                border-radius: 3px;
+                font-size: 1.2rem;
+                margin-bottom: 16px;
+                border: 2px solid darkred;
+                background-color: red;
+                color: white;
+            }
+
+            .border {
+                border-radius: 3px;
+                border: 2px solid orange;
+            }
+
+            .align-text{
+                text-align: center;
+            }
+
+        </style>
+	    <title>Stock tracker by Gumemura</title>
+    </head>
+
+    <body>
+        <!--Display current users's e-mail-->
+        <br></br>
+        <div class="align-text nice-font">
+            {{ currentUser }}
+        </div>
+        <br></br>
+
+        <!--Display buttons-->
+        <div class="align-text">
+            <input id="mainMenuButton" name="show" type="submit" value="Show shares">
+            <input id="mainMenuButton" name="registerNew" type="submit" value="Register shares">
+            <input id="mainMenuButton" name="alert" type="submit" value="Register alert">
+        </div>
+
+        <!--Showing content-->
+        <div class="align-text">
+            <form action="{{ url_for('registerShares') }}" method="POST">
+                <p>Share's name</p>
+                <textarea onkeydown="pressed(event)" name="newShare" style="height:20px;width:200px" placeholder="Enter share's name"></textarea>
+                <br></br>
+                <p>Initial period</p>
+                <!--<textarea onkeydown="pressed(event)" name="fromDate" style="height:20px;width:200px" placeholder="dd/mm/yyyy"></textarea>-->
+
+                <input type="date" name="fromDate" id="datefield" min="2000-01-01", max="">
+                     <!--<a href=register_shares></a>-->
+                </input>
+                <br></br>
+                <div class="align-text">
+                    <input type="submit" value="Submit">
+                </div>
+                {% if error %}
+                    <div class="nice-font-error" role="alert">
+                        Invalid values!
+                    </div>
+                {% endif %}
+            </form>
+        </div>
+    </body>
+</html>

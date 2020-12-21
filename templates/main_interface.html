@@ -80,10 +80,7 @@
         <div class="flex-box container-box">
             <div class="content-box nice-font">Stock Tracker</div>
             <div class="content-box">
-                <form action="." method="POST">
-                    <script>
-
-                    </script>
+                <form action="{{ url_for('index') }}" method="POST">
                     <textarea onkeydown="pressed(event)" name="userEmail" style="height:20px;width:400px" placeholder="Enter your e-mail"></textarea>
                     <input type="submit" value="Submit">
                 </form>
@@ -91,13 +88,19 @@
         </div>
 
         <div class = "container-box nice-font-error">
-        {% with messages = get_flashed_messages() %}
+        <!--{% with messages = get_flashed_messages() %}
             {% if messages %}
                 {% for message in messages %}
                     <p>{{ message }}</p>
                 {% endfor %}
             {% endif %}
-        {% endwith %}
+        {% endwith %}-->
+
+        {% if error %}
+            <div class="nice-font-error" role="alert">
+                Invalid e-mail!
+            </div>
+        {% endif %}
         </div>
 
         <!--<div class="content-box nice-font alert-info">
