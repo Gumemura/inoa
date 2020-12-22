@@ -74,6 +74,13 @@
                 font-size: 100%;
             }
 
+            .nice-font-success{
+                text-align:center;
+                font-family: Arial;
+                color: #a5a5ff;
+                font-size: 100%;
+            }
+
             .upper_right_corner {
                 text-align:center;
                 position: absolute;
@@ -116,7 +123,7 @@
         <div class="align-text">
             <a href=/show_shares ><button class=grey style="height:4em;width:20em">Show shares</button></a>
             <a href=/register_shares ><button class=grey style="height:4em;width:20em">Register share</button></a>
-            <a href=/emailAlert ><button class=grey style="height:4em;width:20em">Email alert</button></a>
+            <a href=/email_alert ><button class=grey style="height:4em;width:20em">Email alert</button></a>
 
         </div>
 
@@ -142,6 +149,11 @@
         {% if error %}
             <div class="nice-font-error" role="alert">
                 {{ error }}
+            </div>
+        {% endif %}
+        {% if success %}
+            <div class="nice-font-success" role="alert">
+                {{ success }}
             </div>
         {% endif %}
     </body>

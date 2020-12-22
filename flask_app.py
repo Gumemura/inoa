@@ -105,14 +105,19 @@ def registerShares():
         if r.status_code == 404:
             return render_template("register_shares.html", error = "Share's name not valid!", currentUser = session['userEmail'])
 
+        currentUserMd = Users.query.filter_by(email = session['userEmail']).first()
+        for share in currentUserMd.shares:
+            if share.name == request.form["newShare"]:
+                return render_template("register_shares.html", error = "Share already registered!", currentUser = session['userEmail'])
+
         newShare = SharesTrack(
             name = request.form["newShare"],
             dateFrom = request.form["fromDate"]
         )
 
-        currentUserMd = Users.query.filter_by(email = session['userEmail']).first()
         currentUserMd.shares.append(newShare)
         db.session.commit()
+        return render_template("register_shares.html", success = "Share registered!", currentUser = session['userEmail'])
     else:
         return render_template("register_shares.html", error = "Invalid input!", currentUser = session['userEmail'])
 
