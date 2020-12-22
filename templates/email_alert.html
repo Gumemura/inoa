@@ -116,33 +116,11 @@
         <div class="align-text">
             <a href=/show_shares ><button class=grey style="height:4em;width:20em">Show shares</button></a>
             <a href=/register_shares ><button class=grey style="height:4em;width:20em">Register share</button></a>
-            <a href=/emailAlert ><button class=grey style="height:4em;width:20em">Email alert</button></a>
-
+            <a href=/email_alert ><button class=grey style="height:4em;width:20em">Email alert</button></a>
         </div>
 
-        <!--Showing content-->
-        <div class="align-text">
-            <form action="{{ url_for('registerShares') }}" method="POST">
-                <p>Share's name</p>
-                <textarea onkeydown="pressed(event)" name="newShare" style="height:20px;width:200px" placeholder="Enter share's name"></textarea>
-                <br></br>
-                <p>Initial period</p>
-                <!--<textarea onkeydown="pressed(event)" name="fromDate" style="height:20px;width:200px" placeholder="dd/mm/yyyy"></textarea>-->
-
-                <input type="date" name="fromDate" id="datefield" min="2000-01-01", max="">
-                     <!--<a href=register_shares></a>-->
-                </input>
-                <br></br>
-                <div class="align-text">
-                    <input type="submit" value="Submit">
-                </div>
-            </form>
+        <div>
+            EMAIL ALERT
         </div>
-        <br></br>
-        {% if error %}
-            <div class="nice-font-error" role="alert">
-                {{ error }}
-            </div>
-        {% endif %}
     </body>
 </html>
