@@ -1,7 +1,7 @@
 from flask import Flask, redirect, render_template, request, url_for, session
 from flask_sqlalchemy import SQLAlchemy
 import requests
-#import yfinance as yf
+import yfinance as yf
 
 app = Flask(__name__)
 app.config["DEBUG"] = True
@@ -18,10 +18,7 @@ app.config["SQLALCHEMY_POOL_RECYCLE"] = 299
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
-
-'''msft = yf.Ticker("MSFT")
-
-tickers = ['MGLU3']
+'''tickers = ['MGLU3']
 
 for ticker in tickers:
     ticker_yahoo = yf.Ticker(ticker+'.SA')
@@ -125,7 +122,25 @@ def registerShares():
 
 @app.route("/show_shares/", methods=["GET", "POST"])
 def showShares():
-    return render_template("show_shares.html", currentUser = session['userEmail'])
+    user = Users.query.filter_by(email = session['userEmail']).first()
+    if request.method == "GET":
+        return render_template("show_shares.html", currentUser = session['userEmail'], user = user)
+
+    fromDate = ""
+    for share in user.shares:
+        if share.name == request.form["sharesSelect"]:
+            fromDate = share.dateFrom
+
+    msft = yf.Ticker(request.form["sharesSelect"])
+    sharesHistoric = msft.history(request.form["sharesSelect"], start = fromDate)
+    return render_template("show_shares.html", currentUser = session['userEmail'], user = user, displayedShare = request.form["sharesSelect"],
+        tables=[sharesHistoric.to_html(
+            classes='data',
+            col_space = '100px',
+            float_format='{:10.2f}'.format,
+            justify='center')],
+        titles=sharesHistoric.columns.values
+    )
 
 @app.route("/email_alert/", methods=["GET", "POST"])
 def emailAlert():

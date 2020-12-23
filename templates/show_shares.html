@@ -1,32 +1,11 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <script>
-        function pressed(e) {
-            if ( (window.event ? event.keyCode : e.which) == 13) {
-                document.forms[0].submit();
-            }
-        }
-        var today = new Date();
-        var dd = today.getDate();
-        var mm = today.getMonth()+1; //January is 0!
-        var yyyy = today.getFullYear();
-        if(dd<10){
-            dd='0'+dd
-        }
-        if(mm<10){
-            mm='0'+mm
-        }
-        document.getElementById("datefield").setAttribute("max", "2020-12-25");
-
-
-        </script>
-
         <style>
             #mainMenuButton {
                 width: 20em;
                 height: 4em;
-          	}
+             }
 
             body {
                 background-color: black;
@@ -67,6 +46,11 @@
                 font-size: 150%;
             }
 
+            .nice-font-shares{
+                font-family: Arial;
+                font-size: 100%;
+            }
+
             .nice-font-error{
                 text-align:center;
                 font-family: Arial;
@@ -99,7 +83,6 @@
             .align-text{
                 text-align: center;
             }
-
         </style>
 	    <title>Stock tracker by Gumemura</title>
     </head>
@@ -118,9 +101,32 @@
             <a href=/register_shares ><button class=grey style="height:4em;width:20em">Register share</button></a>
             <a href=/email_alert ><button class=grey style="height:4em;width:20em">Email alert</button></a>
         </div>
+        <br></br>
 
-        <div>
-            RESULTADOOOOOOOOOO
+        <div class="align-text">
+            <form action="{{ url_for('showShares') }}" method="POST">
+                <select name="sharesSelect" id="shares">
+                {% for share in user.shares %}
+                    <option value={{share.name}}>{{share.name}}</option>
+                {% endfor %}
+                </select>
+                <input type="submit" value="Submit">
+            </form>
         </div>
+
+        <br></br>
+        <div class="align-text nice-font">
+            {{displayedShare}}
+        </div>
+
+        <div class="align-text nice-font-shares" style='margin-left: 240px;'>
+            {% for table in tables %}
+                {{titles[loop.index]}}
+                {{ table|safe }}
+            {% endfor %}
+        </div>
+
+
+
     </body>
 </html>

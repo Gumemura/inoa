@@ -2,32 +2,25 @@
 <html>
     <head>
         <script>
-        function pressed(e) {
-            if ( (window.event ? event.keyCode : e.which) == 13) {
-                document.forms[0].submit();
+            function pressed(e) {
+                if ( (window.event ? event.keyCode : e.which) == 13) {
+                    document.forms[0].submit();
+                }
             }
-        }
-        var today = new Date();
-        var dd = today.getDate();
-        var mm = today.getMonth()+1; //January is 0!
-        var yyyy = today.getFullYear();
-        if(dd<10){
-            dd='0'+dd
-        }
-        if(mm<10){
-            mm='0'+mm
-        }
-        document.getElementById("datefield").setAttribute("max", "2020-12-25");
-
-
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth()+1; //January is 0!
+            var yyyy = today.getFullYear();
+            if(dd<10){
+                dd='0'+dd
+            }
+            if(mm<10){
+                mm='0'+mm
+            }
+            document.getElementById("datefield").setAttribute("max", "2020-12-25");
         </script>
 
         <style>
-            #mainMenuButton {
-                width: 20em;
-                height: 4em;
-          	}
-
             body {
                 background-color: black;
             }
@@ -44,6 +37,11 @@
             p {
                 font-family: Arial;
                 font-size: 100%;
+            }
+
+            #mainMenuButton {
+                width: 20em;
+                height: 4em;
             }
 
             .flex-box {
@@ -106,8 +104,8 @@
             .align-text{
                 text-align: center;
             }
-
         </style>
+
 	    <title>Stock tracker by Gumemura</title>
     </head>
 
