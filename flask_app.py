@@ -2,7 +2,6 @@ from flask import Flask, redirect, render_template, request, url_for, session
 from flask_sqlalchemy import SQLAlchemy
 import requests
 import yfinance as yf
-import smtplib
 
 app = Flask(__name__)
 app.config["DEBUG"] = True
@@ -33,6 +32,8 @@ class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(4096))
     shares = db.relationship('SharesTrack', backref = 'user', lazy=True)
+
+print(type(Users))
 
 class SharesTrack(db.Model):
     __tablename__ = "storedShares"
