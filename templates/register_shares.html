@@ -113,7 +113,7 @@
         <!--Display current users's e-mail-->
         <br></br>
         <div class="align-text nice-font">
-            {{ currentUser }}
+            {{ currentUser.email }}
         </div>
         <br></br>
 
@@ -132,10 +132,8 @@
                 <textarea onkeydown="pressed(event)" name="newShare" style="height:20px;width:200px" placeholder="Enter share's name"></textarea>
                 <br></br>
                 <p>Initial period</p>
-                <!--<textarea onkeydown="pressed(event)" name="fromDate" style="height:20px;width:200px" placeholder="dd/mm/yyyy"></textarea>-->
-
                 <input type="date" name="fromDate" id="datefield" min="2000-01-01", max="">
-                     <!--<a href=register_shares></a>-->
+
                 </input>
                 <br></br>
                 <div class="align-text">

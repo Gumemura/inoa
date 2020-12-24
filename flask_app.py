@@ -2,6 +2,7 @@ from flask import Flask, redirect, render_template, request, url_for, session
 from flask_sqlalchemy import SQLAlchemy
 import requests
 import yfinance as yf
+import smtplib
 
 app = Flask(__name__)
 app.config["DEBUG"] = True
@@ -92,48 +93,48 @@ def index():
 
 @app.route("/register_shares/", methods=["GET", "POST"])
 def registerShares():
+    currentUser = Users.query.filter_by(email = session['userEmail']).first()
     if request.method == "GET":
-        return render_template("register_shares.html", currentUser = session['userEmail'])
+        return render_template("register_shares.html", currentUser = currentUser)
 
     if request.form["newShare"] != '' and request.form["fromDate"] != '':
         url = "{}/v8/finance/chart/{}".format('https://query1.finance.yahoo.com', request.form["newShare"])
         r = requests.get(url)
 
         if r.status_code == 404:
-            return render_template("register_shares.html", error = "Share's name not valid!", currentUser = session['userEmail'])
+            return render_template("register_shares.html", error = "Share's name not valid!", currentUser = currentUser)
 
-        currentUserMd = Users.query.filter_by(email = session['userEmail']).first()
-        for share in currentUserMd.shares:
+        for share in currentUser.shares:
             if share.name == request.form["newShare"]:
-                return render_template("register_shares.html", error = "Share already registered!", currentUser = session['userEmail'])
+                return render_template("register_shares.html", error = "Share already registered!", currentUser = currentUser)
 
         newShare = SharesTrack(
             name = request.form["newShare"],
             dateFrom = request.form["fromDate"]
         )
 
-        currentUserMd.shares.append(newShare)
+        currentUser.shares.append(newShare)
         db.session.commit()
-        return render_template("register_shares.html", success = "Share registered!", currentUser = session['userEmail'])
+        return render_template("register_shares.html", success = "Share registered!", currentUser = currentUser)
     else:
-        return render_template("register_shares.html", error = "Invalid input!", currentUser = session['userEmail'])
+        return render_template("register_shares.html", error = "Invalid input!", currentUser = currentUser)
 
     return redirect(url_for('registerShares'))
 
 @app.route("/show_shares/", methods=["GET", "POST"])
 def showShares():
-    user = Users.query.filter_by(email = session['userEmail']).first()
+    currentUser = Users.query.filter_by(email = session['userEmail']).first()
     if request.method == "GET":
-        return render_template("show_shares.html", currentUser = session['userEmail'], user = user)
+        return render_template("show_shares.html", currentUser = currentUser)
 
     fromDate = ""
-    for share in user.shares:
+    for share in currentUser.shares:
         if share.name == request.form["sharesSelect"]:
             fromDate = share.dateFrom
 
     msft = yf.Ticker(request.form["sharesSelect"])
     sharesHistoric = msft.history(request.form["sharesSelect"], start = fromDate)
-    return render_template("show_shares.html", currentUser = session['userEmail'], user = user, displayedShare = request.form["sharesSelect"],
+    return render_template("show_shares.html", currentUser = currentUser, displayedShare = request.form["sharesSelect"],
         tables=[sharesHistoric.to_html(
             classes='data',
             col_space = '100px',
@@ -144,7 +145,9 @@ def showShares():
 
 @app.route("/email_alert/", methods=["GET", "POST"])
 def emailAlert():
-    return render_template("email_alert.html", currentUser = session['userEmail'])
+    currentUser = Users.query.filter_by(email = session['userEmail']).first()
+    if request.method == "GET":
+        return render_template("email_alert.html", currentUser = currentUser)
 
 print("fim")
 

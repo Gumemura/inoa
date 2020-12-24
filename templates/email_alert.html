@@ -46,6 +46,11 @@
                 font-size: 150%;
             }
 
+            .nice-font-shares{
+                font-family: Arial;
+                font-size: 100%;
+            }
+
             .nice-font-error{
                 text-align:center;
                 font-family: Arial;
@@ -87,7 +92,7 @@
         <!--Display current users's e-mail-->
         <br></br>
         <div class="align-text nice-font">
-            {{ currentUser }}
+            {{ currentUser.email }}
         </div>
         <br></br>
 
@@ -98,8 +103,25 @@
             <a href=/email_alert ><button class=grey style="height:4em;width:20em">Email alert</button></a>
         </div>
 
-        <div>
-            EMAIL ALERT
+        <br></br>
+        <div class="align-text nice-font-shares">
+            <form action="{{ url_for('emailAlert') }}" method="POST">
+                Send an email to {{currentUser.email}} when the share
+
+                <select name="sharesSelect" id="shares">
+                    {% for share in currentUser.shares %}
+                        <option value={{share.name}}>{{share.name}}</option>
+                    {% endfor %}
+                </select>
+                 values goes
+                <select name="highOrLow" id="hOl">
+                    <option value='higher'>higher</option>
+                    <option value='lower'>lower</option>
+                </select>
+                 than
+                <textarea onkeydown="pressed(event)" name="valueAlert" style="height:15px;width:40px" placeholder=""></textarea>
+                <input type="submit" value="Submit">
+            </form>
         </div>
     </body>
 </html>

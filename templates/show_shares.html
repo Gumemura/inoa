@@ -91,7 +91,7 @@
         <!--Display current users's e-mail-->
         <br></br>
         <div class="align-text nice-font">
-            {{ currentUser }}
+            {{ currentUser.email }}
         </div>
         <br></br>
 
@@ -106,7 +106,7 @@
         <div class="align-text">
             <form action="{{ url_for('showShares') }}" method="POST">
                 <select name="sharesSelect" id="shares">
-                {% for share in user.shares %}
+                {% for share in currentUser.shares %}
                     <option value={{share.name}}>{{share.name}}</option>
                 {% endfor %}
                 </select>
