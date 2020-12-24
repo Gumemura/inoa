@@ -5,6 +5,7 @@ Exibir os alertas registrados
 Permitir que os alertas registrados sejam alterados (deletados e ter a data inicial alterada)
 Botao de logout
 Alerta caso email nao tenha sido disparado (email errado)
+Exibir mensagem caro nao haja acoes registradas
 '''
 
 from flask import Flask, redirect, render_template, request, url_for, session
@@ -71,7 +72,7 @@ def index():
         return render_template("main_interface.html", users = Users.query.all())
 
     session['userEmail'] = request.form["userEmail"] #"variavel global" que aramzena o email do usuario ativo
- 
+
     #validando o email inserido. pre requisito é ter um @ precedido de um .
     emailValidator = 0
     for i in range(len(session['userEmail'])):
