@@ -58,6 +58,13 @@
                 font-size: 100%;
             }
 
+            .nice-font-success{
+                text-align:center;
+                font-family: Arial;
+                color: #a5a5ff;
+                font-size: 100%;
+            }
+
             .upper_right_corner {
                 text-align:center;
                 position: absolute;
@@ -108,20 +115,25 @@
             <form action="{{ url_for('emailAlert') }}" method="POST">
                 Send an email to {{currentUser.email}} when the share
 
-                <select name="sharesSelect" id="shares">
+                <select name="shareToKeepTrack" id="shares">
                     {% for share in currentUser.shares %}
                         <option value={{share.name}}>{{share.name}}</option>
                     {% endfor %}
                 </select>
-                 values goes
+                value goes
                 <select name="highOrLow" id="hOl">
                     <option value='higher'>higher</option>
                     <option value='lower'>lower</option>
                 </select>
-                 than
+                than
                 <textarea onkeydown="pressed(event)" name="valueAlert" style="height:15px;width:40px" placeholder=""></textarea>
                 <input type="submit" value="Submit">
             </form>
         </div>
+        <br></br>
+
+        <div class="align-text nice-font-success">
+                {{success}}
+        </dvi>
     </body>
 </html>

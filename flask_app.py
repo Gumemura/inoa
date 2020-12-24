@@ -33,7 +33,6 @@ class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(4096))
     shares = db.relationship('SharesTrack', backref = 'user', lazy=True)
-    alert = db.relationship('EmailShooter', backref = 'user', lazy=True)
 
 class SharesTrack(db.Model):
     __tablename__ = "storedShares"
@@ -42,14 +41,8 @@ class SharesTrack(db.Model):
     name = db.Column(db.String(4096))
     dateFrom = db.Column(db.Date)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-
-class EmailShooter(db.Model):
-    __tablename__ = "emailAlert"
-
-    id = db.Column(db.Integer, primary_key=True)
-    share = db.Column(db.String(4096))
-    higher = db.Column(db.Boolean)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    higherThan = db.Column(db.Boolean)
+    value = db.Column(db.Integer)
 
 with app.app_context():
     db.create_all()
@@ -148,6 +141,15 @@ def emailAlert():
     currentUser = Users.query.filter_by(email = session['userEmail']).first()
     if request.method == "GET":
         return render_template("email_alert.html", currentUser = currentUser)
+
+    for share in currentUser.shares:
+        if share.name == request.form["shareToKeepTrack"]:
+            share.higherThan = (request.form["highOrLow"] == 'higher')
+            share.value = request.form["valueAlert"]
+            break
+    db.session.commit()
+
+    return render_template("email_alert.html", currentUser = currentUser, success = "Alert registered!")
 
 print("fim")
 
