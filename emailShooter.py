@@ -1,12 +1,18 @@
+'''
+Scrip de disparo de email
+'''
+
 import mysql.connector
 import smtplib
 import yfinance as yf
 
+#acessando a base de dados
 db = mysql.connector.connect(host = "gumemura.mysql.pythonanywhere-services.com",
                                      database = "gumemura$Inoa",
                                      user = "gumemura",
                                      password="leonscot")
 
+#funcao de dispara o email
 def emailShooter(destination, text):
     email_from = "sharetrackerinoa@gmail.com"
     email_to = destination
@@ -19,6 +25,7 @@ def emailShooter(destination, text):
     server.sendmail(email_from, email_to, text)
     server.quit()
 
+#acessando a table de shares
 shares = db.cursor(buffered=True)
 shares.execute('SELECT name, user_id, higherThan, value FROM storedShares;')
 
@@ -29,6 +36,7 @@ for share in shares:
         isHigher = share[2]
         shareValue = share[3]
 
+        #pegando o email do usuario
         emails = db.cursor(buffered=True)
         emails.execute('SELECT id, email FROM users;')
         for email in emails:
@@ -36,10 +44,12 @@ for share in shares:
                 userEmail = email[1]
                 break
 
+        #pegando o valor atual da acao
         ticker = yf.Ticker(shareName)
         data = ticker.history()
         last_quote = (data.tail(1)['Close'].iloc[0])
 
+        #determinando o conteudo do email
         subject = 'Informe das acoes ' + shareName
         msg = shareName + "\n\n"
         if isHigher == 1:
@@ -60,6 +70,7 @@ for share in shares:
 
         text = 'Subject: {}\n\n{}'.format(subject, msg)
 
+        #try except caso o usuario tenha inserido um email invalido
         try:
             emailShooter(userEmail, text)
         except:
