@@ -19,16 +19,17 @@ def emailShooter(destination, text):
     server.sendmail(email_from, email_to, text)
     server.quit()
 
-shares = db.cursor()
+shares = db.cursor(buffered=True)
 shares.execute('SELECT name, user_id, higherThan, value FROM storedShares;')
 
+userEmail = ''
 for share in shares:
     if share[-1] != None:
         shareName = share[0]
         isHigher = share[2]
         shareValue = share[3]
 
-        emails = db.cursor()
+        emails = db.cursor(buffered=True)
         emails.execute('SELECT id, email FROM users;')
         for email in emails:
             if email[0] == share[1]:
@@ -49,7 +50,7 @@ for share in shares:
                 msg = 'O valor da acao continua abaixo do valor estabelecido.'
         else:
             if last_quote > shareValue:
-                msg = 'O valor da acao acima do valor estabelecido.'
+                msg = 'O valor da acao continua acima do valor estabelecido.'
             else:
                 msg = 'O valor da acao está abaixo do valor estabelecido!'
                 subject = 'O valor de ' + shareName + ' caiu!'
@@ -59,9 +60,11 @@ for share in shares:
 
         text = 'Subject: {}\n\n{}'.format(subject, msg)
 
-        emailShooter(userEmail, text)
+        try:
+            emailShooter(userEmail, text)
+        except:
+            print("An exception occurred. Email not send to " + userEmail)
 
-print(msg)
 
 
 
