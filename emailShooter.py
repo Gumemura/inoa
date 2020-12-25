@@ -62,7 +62,7 @@ for share in shares:
             if last_quote > shareValue:
                 msg = msg + 'O valor da acao continua acima do valor estabelecido.'
             else:
-                msg = msg + 'O valor da acao está abaixo do valor estabelecido!'
+                msg = msg + 'O valor da acao esta abaixo do valor estabelecido!'
                 subject = 'O valor de ' + shareName + ' caiu!'
 
         msg = msg + "\n\nValor almejado: " + str(round(shareValue, 2))

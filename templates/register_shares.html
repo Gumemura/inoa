@@ -65,6 +65,12 @@
                 font-size: 150%;
             }
 
+            .nice-font-logout{
+                font-family: Arial;
+                font-size: 90%;
+                color: white;
+            }
+
             .nice-font-error{
                 text-align:center;
                 font-family: Arial;
@@ -104,6 +110,7 @@
             .align-text{
                 text-align: center;
             }
+</style>
         </style>
 
 	    <title>Stock tracker by Gumemura</title>
@@ -114,6 +121,9 @@
         <br></br>
         <div class="align-text nice-font">
             {{ currentUser.email }}
+            <a href=/ class="upper_right_corner nice-font-logout">
+                Log out
+            </a>
         </div>
         <br></br>
 
